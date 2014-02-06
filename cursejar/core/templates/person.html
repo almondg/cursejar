@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+    <div class="container">
+    {{ person.name }}
+    {% for challenge in person.challenge_set.all %}
+        {{ challenge.name }}
+    {% endfor %}
+    </div>
+
+</body>
+</html>

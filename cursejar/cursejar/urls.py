@@ -1,7 +1,6 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
-from cursejar.core import views
-
+from core import views
 admin.autodiscover()
 
 urlpatterns = patterns('',
@@ -11,6 +10,15 @@ urlpatterns = patterns('',
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'', include('social_auth.urls')),
+    url(r'^challenge/(?P<pk>\d+)/$', views.ChallengeView.as_view(),
+        name='challenge-details',
+        kwargs={}),
+    url(r'^user/(?P<pk>\d+)/$', views.PersonView.as_view(),
+        name='user-details'),
+    (r'^accounts/logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'}),
+    #url(r'^', include('core.urls')),
+    url(r'^accounts/', include('allauth.urls')),
+    url(r'^admin/', include(admin.site.urls)),
     url(r'^$', views.index, name='index'),
-    url(r'^$', views.login, name='login'),
+
 )
