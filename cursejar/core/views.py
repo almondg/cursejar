@@ -89,5 +89,5 @@ class CreateChallenge(CreateView):
         return super(CreateChallenge, self).form_valid(challenge)
     
     def get_success_url(self):
-        result = reverse(viewname='challenge-details', current_app='core', args=[3])
+        result = reverse(viewname='challenge-details', current_app='core', kwargs={'pk': self.object.pk})
         return result
