@@ -69,6 +69,7 @@ def login(request):
     template_context = {'settings': local, 'error': error}
     return render_to_response('core/login.html', template_context, context_instance=RequestContext(request))
 
+
 class ChallengeView(DetailView):
     model = Challenge
     template_name = 'core/challenge.html'
