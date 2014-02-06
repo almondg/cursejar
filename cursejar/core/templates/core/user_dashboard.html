@@ -1,0 +1,18 @@
+{% extends "core/generic_layout.html" %}
+
+{% block h1 %}
+
+    {{ person.name }}
+
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <ul>
+        {% for challenge in person.challenges.all %}
+           <li><a href="{% url 'challenge-details'  challenge.pk %}">{{ challenge.name }}</a></li>
+        {% endfor %}
+        </ul>
+        <a href="{% url 'create-a-challenge' %}">Create a new form</a>
+    </div>
+{% endblock %}

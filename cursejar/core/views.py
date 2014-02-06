@@ -1,9 +1,12 @@
 from django.shortcuts import render
+from django.core.urlresolvers import reverse
+from models import Challenge, Person, Word, Jar, FacebookPerson
 from django.views.generic.detail import DetailView
 from django.contrib import auth
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
+from django.views.generic.edit import FormView, CreateView
 
 import cgi
 import urllib
@@ -11,7 +14,7 @@ import urllib
 from cursejar.settings import local
 import models
 
-from models import Challenge, Person
+
 
 
 # Create your views here.
@@ -66,6 +69,7 @@ def login(request):
     template_context = {'settings': local, 'error': error}
     return render_to_response('core/login.html', template_context, context_instance=RequestContext(request))
 
+
 class ChallengeView(DetailView):
     model = Challenge
     template_name = 'core/challenge.html'
@@ -73,12 +77,17 @@ class ChallengeView(DetailView):
 
 class PersonView(DetailView):
     model = Person
-    template_name = 'core/person.html'
-    #
-    # def get_context_data(self, **kwargs):
-    #     context = super(PersonView, self).get_context_data(**kwargs)
-    #     pk = self.kwargs['pk']
-    #     person = Person.objects.get(pk=pk)
-    #     context['']
-    #     return  context
+    template_name = 'core/user_dashboard.html'
 
+
+class CreateChallenge(CreateView):
+    model = Challenge
+    fields = ['name', 'end_date', 'participant']
+
+    def form_valid(self, challenge):
+        challenge.save()
+        return super(CreateChallenge, self).form_valid(challenge)
+    
+    def get_success_url(self):
+        result = reverse(viewname='challenge-details', current_app='core', args=[3])
+        return result

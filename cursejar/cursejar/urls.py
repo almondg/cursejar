@@ -1,20 +1,17 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import patterns, url, include
 from django.contrib import admin
 from core import views
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    # Examples:
-    # url(r'^$', 'cursejar.views.home', name='home'),
-    # url(r'^blog/', include('blog.urls')),
-
     url(r'^admin/', include(admin.site.urls)),
     url(r'', include('social_auth.urls')),
     url(r'^challenge/(?P<pk>\d+)/$', views.ChallengeView.as_view(),
-        name='challenge-details',
-        kwargs={}),
+        name='challenge-details', ),
     url(r'^user/(?P<pk>\d+)/$', views.PersonView.as_view(),
         name='user-details'),
+    url(r'^create-a-challenge/$', views.CreateChallenge.as_view(),
+        name='create-a-challenge'),
     (r'^accounts/logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'}),
     #url(r'^', include('core.urls')),
     url(r'^accounts/', include('allauth.urls')),
