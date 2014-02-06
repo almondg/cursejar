@@ -21,6 +21,15 @@ class Person(models.Model):
         return unicode(self.name)
 
 
+class PayPalUser(models.Model):
+    person = models.ForeignKey('Person')
+    token = models.TextField(null=True)
+    billing_agreement = models.TextField(null=True)
+
+    def __unicode__(self):
+        return unicode(self.person.name) + ' ' + unicode(self.token)
+
+
 class Challenge(models.Model):
     start_date = models.DateTimeField(auto_now=True)
     end_date = models.DateTimeField(default=DEADLINE_DEFAULT)
