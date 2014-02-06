@@ -7,22 +7,43 @@ https://docs.djangoproject.com/en/1.6/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.6/ref/settings/
 """
+import os
+from os.path import dirname, abspath, join
+from django.core.exceptions import ImproperlyConfigured
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 
+# return variable environment value or raise ImproperlyConfigured exception
+def get_env_variable(var_name):
+    try:
+        return os.environ[var_name]
+    except KeyError:
+        error_msg = 'Set the %s environment variable' % var_name
+        raise ImproperlyConfigured(error_msg)
+
+root = lambda *x: abspath(join(dirname(__file__), '..', '..', *x))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'z1(z-miha@sydgj+yi0unqg9xfwzbi9rn1jk^$td*%kbb_kp&g'
+DJANGO_SECRET_KEY = 'z1(z-miha@sydgj+yi0unqg9xfwzbi9rn1jk^$td*%kbb_kp&g'
+
+
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = get_env_variable('SECRET_KEY')
+
+# SECURITY WARNING: keep the facebook app secret key used in production secret!
+FACEBOOK_SECRET_KEY = get_env_variable('FACEBOOK_SECRET_KEY')
+
+FACEBOOK_APP_ID = get_env_variable('FACEBOOK_APP_ID')
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-TEMPLATE_DEBUG = True
+TEMPLATE_DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -36,6 +57,9 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.admin',
+    'south',
+    'core',
 )
 
 MIDDLEWARE_CLASSES = (
