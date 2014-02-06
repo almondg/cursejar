@@ -60,6 +60,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'south',
     'core',
+    'django_mongodb_engine',
 )
 
 MIDDLEWARE_CLASSES = (
