@@ -4,10 +4,10 @@ __author__ = 'shaked'
 
 import facebook
 from pprint import pprint
-import locale
+import cursejar.cursejar.settings.local as local
 
 graph = facebook.GraphAPI()
-graph.access_token = facebook.get_app_access_token(locale.FACEBOOK_APP_ID, locale.FACEBOOK_SECRET_KEY)
+graph.access_token = facebook.get_app_access_token(local.FACEBOOK_APP_ID, local.FACEBOOK_SECRET_KEY)
 
 results = graph.get_connections('715900751', 'friends')
 pprint(results)
