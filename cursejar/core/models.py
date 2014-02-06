@@ -20,7 +20,7 @@ class Challenge(models.Model):
     start_date = models.DateTimeField(auto_now=True)
     end_date = models.DateTimeField()
     name = models.CharField(max_length=128)
-    participants = models.ManyToManyField(Person, related_name='participants')
+    participant = models.ManyToManyField(Person, related_name='participants')
 
     def __unicode__(self):
         return unicode(self.name)
