@@ -55,9 +55,9 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admin',
+    'django_mongodb_engine',
     'south',
     'core',
-    'django_mongodb_engine',
 )
 
 MIDDLEWARE_CLASSES = (
