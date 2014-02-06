@@ -1,4 +1,0 @@
-UPDATE django_site SET DOMAIN = '127.0.0.1:8000', name = 'Cursejar' WHERE id=1;
-INSERT INTO socialaccount_socialapp (provider, name, secret, client_id, `key`)
-VALUES ("facebook", "Facebook", "2d92754c7f41c59b24cb5dcae308677e", "533600183421965", '');
-INSERT INTO socialaccount_socialapp_sites (socialapp_id, site_id) VALUES (1,1);
