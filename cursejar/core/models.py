@@ -14,12 +14,9 @@ import hashlib
 DEFAULT_FINE_FOR_WORD = 1
 
 
-class FacebookPerson(models.Model):
-    pass
-
-
 class Person(models.Model):
     name = models.CharField(max_length=128)
+    facebook_profile = models.ForeignKey('UserProfile', null=True)
 
     def __unicode__(self):
         return unicode(self.name)
