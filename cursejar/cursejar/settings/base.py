@@ -17,11 +17,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 # return variable environment value or raise ImproperlyConfigured exception
 def get_env_variable(var_name):
-    try:
-        return os.environ[var_name]
-    except KeyError:
-        error_msg = 'Set the %s environment variable' % var_name
-        raise ImproperlyConfigured(error_msg)
+    return ""
+
 
 root = lambda *x: abspath(join(dirname(__file__), '..', '..', *x))
 # Quick-start development settings - unsuitable for production
