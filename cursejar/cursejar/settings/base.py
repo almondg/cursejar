@@ -1,7 +1,18 @@
 # Django settings for cursejar project.
 import os
+from os.path import dirname, abspath, join
+from django.core.exceptions import ImproperlyConfigured
+
+# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+
 
 ROOT_PATH = os.path.dirname(__file__)
+
+root = lambda *x: abspath(join(dirname(__file__), '..', '..', *x))
+
+# SECURITY WARNING: keep the secret key used in production secret!
+DJANGO_SECRET_KEY = 'z1(z-miha@sydgj+yi0unqg9xfwzbi9rn1jk^$td*%kbb_kp&g'
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -118,6 +129,8 @@ ROOT_URLCONF = 'cursejar.urls'
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'cursejar.wsgi.application'
 
+TEMPLATE_DIRS = root("templates")
+
 TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.request",
     "django.contrib.auth.context_processors.auth",
@@ -125,11 +138,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "allauth.socialaccount.context_processors.socialaccount",
 )
 
-TEMPLATE_DIRS = (
-    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
-)
 
 INSTALLED_APPS = (
     'django.contrib.auth',
@@ -158,7 +166,7 @@ INSTALLED_APPS = (
     'django_mongodb_engine',
     'south',
     'core',
-    'social_auth'
+    'social_auth',
 )
 
 
