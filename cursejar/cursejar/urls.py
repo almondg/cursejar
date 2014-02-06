@@ -12,4 +12,10 @@ urlpatterns = patterns('',
         name='user-details'),
     url(r'^create-a-challenge/$', views.CreateChallenge.as_view(),
         name='create-a-challenge'),
+    (r'^accounts/logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'}),
+    #url(r'^', include('core.urls')),
+    url(r'^accounts/', include('allauth.urls')),
+    url(r'^admin/', include(admin.site.urls)),
+    url(r'^$', views.index, name='index'),
+
 )

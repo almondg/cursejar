@@ -11,21 +11,12 @@
 </head>
 <body>
     <div>My Flask: <a href="{{url_for('index')}}">Home</a>
-        {% if g.user.is_authenticated() %}
+        {% is_authenticated %}
         <a href="{{url_for('logout')}}">Logout</a></div>
         {% else %}
         <a href="{{url_for('login')}}">Login</a>
         {% endif %}
     <hr>
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-    <ul>
-    {% for message in messages %}
-        <li>{{ message }}</li>
-    {% endfor %}
-    </ul>
-    {% endif %}
-    {% endwith %}
     {% block content %}{% endblock %}
 
 </body>
