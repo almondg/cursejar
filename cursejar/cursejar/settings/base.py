@@ -120,6 +120,9 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend'
 )
 
+
+TEMPLATE_DIRS = root("templates")
+
 TEMPLATE_CONTEXT_PROCESSORS = (
     "social_auth.context_processors.social_auth_by_type_backends",
     "django.contrib.auth.context_processors.auth",
