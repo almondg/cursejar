@@ -1,13 +1,14 @@
-import time
+import time, datetime
 import requests
 from django.core.urlresolvers import reverse
-
+from django.utils import timezone
 from django.views.generic.detail import DetailView
 from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
 from django.views.generic.edit import CreateView
 from core.forms import ChallengeForm, ChallengeFormSet
 from django.http import HttpResponseRedirect
+from  django.conf import settings
 from models import Challenge, Person, PayPalUser, Jar
 
 
@@ -19,6 +20,16 @@ def index(request):
 class ChallengeView(DetailView):
     model = Challenge
     template_name = 'main/challenge.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(ChallengeView, self).get_context_data(**kwargs)
+        object = context['object']
+
+        context['is_time_up'] = datetime.datetime.now() > object.end_date
+        context['sum_of_debt'] = Jar.objects.get(challenge=object).current_sum
+        context['winner_user'] = Person.objects.get(name='yotam')
+
+        return context
 
 
 class PersonView(DetailView):
@@ -125,16 +136,18 @@ def paypal_agreement(request):
 
 def paypal_charge_user(request):
     if request.user.is_authenticated():
-        challenge_pk = request.GET['challenge_pk']
-        winner_pk = request.GET['winner_pk']
+        challenge_pk = request.POST['challenge']
+        winner_pk = request.POST['winner-user']
         related_challenge = Challenge.objects.get(pk=challenge_pk)
         winner_user = Person.objects.get(pk=winner_pk)
         paying_user = Person.objects.get(pk=request.user.profile.pk)
         paying_paypal_user = PayPalUser.objects.get(person=paying_user)
-        paid_amount_total = Jar.objects.get(challenge=related_challenge)
-        number_of_paying_participants = related_challenge.persons.count() - 1
+        paid_amount_total = Jar.objects.get(challenge=related_challenge).current_sum
+        #TODO: change back to calculate number_of_paying_participants
+
+        number_of_paying_participants = related_challenge.participant.count()
         if number_of_paying_participants > 0:
-            paid_amount_per_user = float(paid_amount_total)/float(number_of_paying_participants)
+            paid_amount_per_user = paid_amount_total/number_of_paying_participants
         else:
             paid_amount_per_user = paid_amount_total
         return_absolute_uri = request.build_absolute_uri(reverse('index'))
@@ -185,3 +198,11 @@ def paypal_charge_user(request):
         else:
             print 'Nothing to pay on.'
             return HttpResponseRedirect(reverse('challenge-details', kwargs={'pk': challenge_pk}))
+
+
+# def get_posts_from_facebook():
+#     related_challenge = Challenge.objects.get(pk=pk)
+#     list_of_participants =
+#     graph = facebook.GraphAPI()
+#     graph.access_token = facebook.get_app_access_token(settings.FACEBOOK_APP_ID, settings.FACEBOOK_SECRET_KEY)
+#     graph.get_connections()

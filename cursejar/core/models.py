@@ -16,6 +16,7 @@ DEFAULT_FINE_FOR_WORD = 1
 
 class Person(models.Model):
     name = models.CharField(max_length=128)
+    email = models.EmailField(null=True)
 
     def __unicode__(self):
         return unicode(self.name)
@@ -44,7 +45,7 @@ class Jar(models.Model):
     current_sum = models.FloatField(default=0)
 
     def __unicode__(self):
-        return self.id
+        return unicode(self.challenge.name)+'_jar'
 
 
 class ChargeEvent(models.Model):

@@ -45,5 +45,22 @@
 
 <a href="{% url 'view-all-challenges' request.user.profile.pk %}">View All My Challenges</a>
 
+{% if is_time_up %}
+    <div>
+    </div>
+    <form method="POST" action="{% url 'paypal-charge-user' %}">
+        {% csrf_token %}
+        <input type="hidden" name="challenge" value="{{ object.pk }}">
+        <input type="hidden" name="winner-user" value="{{ winner_user.pk }}">
+
+        <input type="submit" >
+    </form>
+{% else %}
+    <br>
+    {{ now }}
+    Still running!
+{% endif %}
+
+
 </body>
 </html>
