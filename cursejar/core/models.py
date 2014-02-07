@@ -101,3 +101,11 @@ class UserProfile(models.Model):
 
 
 User.profile = property(lambda u: UserProfile.objects.get_or_create(user=u)[0])
+
+
+class Author(models.Model):
+    name = models.CharField(max_length=100)
+
+class Book(models.Model):
+    author = models.ForeignKey(Author)
+    title = models.CharField(max_length=100)

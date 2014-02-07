@@ -1,16 +1,12 @@
-from allauth import models
 from django.core.urlresolvers import reverse
-from django.forms.models import ModelForm, modelformset_factory
 
 from django.views.generic.detail import DetailView
 from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
 from django.views.generic.edit import CreateView
-from django.forms.formsets import formset_factory
-from djangotoolbox.fields import ListField
-from core.forms import ChallengeForm, ChallengeFormSet, StringListField
+from core.forms import ChallengeForm, ChallengeFormSet, BookFormSet, AuthorForm
 
-from models import Challenge, Person
+from models import Challenge, Person, Author, Book
 
 
 def index(request):
@@ -70,3 +66,25 @@ class CreateChallenge(CreateView):
         return result
 
 
+class AddAuthorView(CreateView):
+    template_name = 'main/add_ch_template.html'
+    form_class = AuthorForm
+
+    def get_context_data(self, **kwargs):
+        context = super(AddAuthorView, self).get_context_data(**kwargs)
+        if self.request.POST:
+            context['formset'] = BookFormSet(self.request.POST)
+        else:
+            context['formset'] = BookFormSet()
+        return context
+
+    def form_valid(self, form):
+        context = self.get_context_data()
+        formset = context['formset']
+        if formset.is_valid():
+            self.object = form.save()
+            formset.instance = self.object
+            formset.save()
+            return redirect(self.object.get_absolute_url())  # assuming your model has ``get_absolute_url`` defined.
+        else:
+            return self.render_to_response(self.get_context_data(form=form))
