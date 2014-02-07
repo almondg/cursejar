@@ -7,6 +7,8 @@
 </head>
 <body class="{% if request.user.is_authenticated %}logged-in{% else %}logged-out{% endif %}">
 {% block content_before %}
+{% block content %}
+{% endblock %}
 {% endblock %}
 </body>
 </html>

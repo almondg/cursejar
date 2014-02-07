@@ -14,12 +14,17 @@ def index(request):
 
 class ChallengeView(DetailView):
     model = Challenge
-    template_name = 'core/challenge.html'
+    template_name = 'main/challenge.html'
 
 
 class PersonView(DetailView):
     model = Person
-    template_name = 'core/user_dashboard.html'
+    template_name = 'main/user_dashboard.html'
+
+
+class AllChallenges(DetailView):
+    model = Person
+    template_name = 'main/all_challenges.html'
 
 
 class CreateChallenge(CreateView):

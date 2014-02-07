@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+<table>
+    <tr>
+    <td><img src="{{ request.user.profile.profile_image_url }}"/></td>
+    <td><h1>All of {{ person.name }}'s challenges:</h1></td>
+    </tr>
+</table>
+<table border="1px">
+<tbody>
+<tr>
+    <td>Challenge Name</td>
+    <td>Words</td>
+    <td>Start Date</td>
+    <td>End Date</td>
+    <td>Participants</td>
+    <td>Logger</td>
+</tr>
+{% for challenge in person.challenges.all %}
+<tr>
+    <td>{{ challenge.name }}</td>
+    <td>
+        <ul type="squre">
+            {% for w in challenge.word_set.all %}
+            <li>{{ w }}</li>
+            {% endfor %}
+        </ul>
+    </td>
+    <td>{{ challenge.start_date }}</td>
+    <td>{{ challenge.end_date }}</td>
+    <td>
+        <ul type="squre">
+            {% for p in challenge.participant.all %}
+            <li>{{ p }}</li>
+            {% endfor %}
+        </ul>
+    </td>
+    <td>{{ challenge.word.all }}<img src="{{ request.user.profile.profile_image_url }}"/></td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+</body>
+</html>
