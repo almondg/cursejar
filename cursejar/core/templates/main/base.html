@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% block title %}
+    {% endblock %}
+    <link rel="stylesheet" type="text/css" href="/static/css/style.css" />
+</head>
+<body class="{% if request.user.is_authenticated %}logged-in{% else %}logged-out{% endif %}">
+{% block content_before %}
+{% endblock %}
+</body>
+</html>
