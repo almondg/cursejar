@@ -23,11 +23,10 @@ class Person(models.Model):
 
 class PayPalUser(models.Model):
     person = models.ForeignKey('Person')
-    token = models.TextField(null=True)
-    billing_agreement = models.TextField(null=True)
+    pre_approval_key = models.TextField(null=True)
 
     def __unicode__(self):
-        return unicode(self.person.name) + ' ' + unicode(self.token)
+        return unicode(self.person.name) + ' ' + unicode(self.pre_approval_key)
 
 
 class Challenge(models.Model):
