@@ -18,9 +18,18 @@ DEFAULT_FINE_FOR_WORD = 1
 
 class Person(models.Model):
     name = models.CharField(max_length=128)
+    email = models.EmailField(null=True)
 
     def __unicode__(self):
         return unicode(self.name)
+
+
+class PayPalUser(models.Model):
+    person = models.ForeignKey('Person')
+    pre_approval_key = models.TextField(null=True)
+
+    def __unicode__(self):
+        return unicode(self.person.name) + ' ' + unicode(self.pre_approval_key)
 
 
 class Challenge(models.Model):
@@ -43,7 +52,7 @@ class Jar(models.Model):
     current_sum = models.FloatField(default=0)
 
     def __unicode__(self):
-        return self.id
+        return unicode(self.challenge.name)+'_jar'
 
 
 class ChargeEvent(models.Model):
