@@ -28,7 +28,7 @@ class Challenge(models.Model):
     start_date = models.DateTimeField(auto_now=True)
     end_date = models.DateTimeField(default=DEADLINE_DEFAULT)
     name = models.CharField(max_length=128)
-    participant = models.ManyToManyField(Person, related_name='challenges')
+    participant = models.ManyToManyField('Person', related_name='challenges')
     word1 = models.CharField(max_length=64, null=True, blank=True)
     word2 = models.CharField(max_length=64, null=True, blank=True)
     word3 = models.CharField(max_length=64, null=True, blank=True)
@@ -39,25 +39,24 @@ class Challenge(models.Model):
 
 
 class Jar(models.Model):
-    challenge = models.ForeignKey('Challenge')
+    challenge = models.ForeignKey('Challenge', related_name='jar')
     current_sum = models.FloatField(default=0)
 
     def __unicode__(self):
-        return self.id
+        return unicode(self.id)
 
 
 class ChargeEvent(models.Model):
     jar = models.ForeignKey('Jar')
     date_of_felony = models.DateTimeField(auto_now=True)
     felon = models.ForeignKey('Person')
-    crime = models.ForeignKey('Word')
+    crime = models.CharField(max_length=128)
     evidence = models.URLField()
 
     def __unicode__(self):
         return unicode(self.felon) + \
                " " + unicode(self.crime) + \
                " " + unicode(self.date_of_felony)
-
 
 class Word(models.Model):
     challenge = models.ForeignKey('Challenge')
@@ -75,7 +74,8 @@ class UserProfile(models.Model):
     id = models.AutoField(primary_key=True, db_column='ID')
     user = models.OneToOneField(User, related_name='profile')
     about_me = models.TextField(null=True, blank=True)
-    person = models.ForeignKey('Person', null=True)
+    person = models.ForeignKey('Person', null=True, related_name='profile')
+    username = models.CharField(max_length=128)
 
     def __unicode__(self):
         return "{}'s profile".format(self.user.username)
@@ -89,6 +89,8 @@ class UserProfile(models.Model):
         otherwise return the user's Gravatar URL
         """
         fb_uid = SocialAccount.objects.filter(user_id=self.user.id, provider='facebook')
+
+
 
         if len(fb_uid):
             return "http://graph.beta.facebook.com/{}/picture?width=40&height=40".format(fb_uid[0].uid)

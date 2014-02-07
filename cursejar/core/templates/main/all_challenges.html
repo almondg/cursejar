@@ -40,7 +40,7 @@
                 {% endfor %}
             </ul>
         </td>
-        <td>{{ challenge.word.all }}<img src="{{ request.user.profile.profile_image_url }}"/></td>
+        <td><a href="{% url 'challenge-details' challenge.pk %}">View</a></td>
     </tr>
     {% endfor %}
     </tbody>
