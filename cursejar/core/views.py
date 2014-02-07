@@ -68,7 +68,8 @@ class AddChallengeView(CreateView):
 
 class CreateChallenge(CreateView):
     model = Challenge
-    fields = ['name', 'end_date', 'participant']
+    fields = ['name', 'end_date', 'participant', 'word1', 'word2', 'word3']
+
 
     def form_valid(self, challenge):
         challenge.save()

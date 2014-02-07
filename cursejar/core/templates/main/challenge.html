@@ -24,9 +24,9 @@
         <td>{{ object.name }}</td>
         <td>
             <ul type="squre">
-                {% for w in challenge.word_set.all %}
-                <li>{{ w }}</li>
-                {% endfor %}
+                <li>{{ challenge.word1 }}</li>
+                <li>{{ challenge.word2 }}</li>
+                <li>{{ challenge.word3 }}</li>
             </ul>
         </td>
         <td>{{ object.start_date }}</td>

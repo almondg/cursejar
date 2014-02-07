@@ -1,9 +1,11 @@
+from django import forms
 from django.contrib.auth.models import User
 from django.db import models
 import datetime
 from django.utils.timezone import utc
 from allauth.account.models import EmailAddress
 from allauth.socialaccount.models import SocialAccount
+from djangotoolbox.fields import ListField
 
 now = datetime.datetime.utcnow().replace(tzinfo=utc)
 DEADLINE_DEFAULT = now + datetime.timedelta(weeks=1)
@@ -31,10 +33,15 @@ class PayPalUser(models.Model):
 
 
 class Challenge(models.Model):
+    id = models.AutoField(primary_key=True, db_column='ID')
     start_date = models.DateTimeField(auto_now=True)
     end_date = models.DateTimeField(default=DEADLINE_DEFAULT)
     name = models.CharField(max_length=128)
     participant = models.ManyToManyField(Person, related_name='challenges')
+    word1 = models.CharField(max_length=64, null=True, blank=True)
+    word2 = models.CharField(max_length=64, null=True, blank=True)
+    word3 = models.CharField(max_length=64, null=True, blank=True)
+
 
     def __unicode__(self):
         return unicode(self.name)
