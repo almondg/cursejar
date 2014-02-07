@@ -23,4 +23,6 @@ urlpatterns = patterns('',
     url(r'^accounts/', include('allauth.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', views.index, name='index'),
+    url(r'^paypal-agreement/$', views.paypal_agreement, name='paypal-agreement'),
+    url(r'^paypal-charge-user/$', views.paypal_charge_user, name='paypal-harge-user'),
 )
