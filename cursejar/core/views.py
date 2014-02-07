@@ -1,28 +1,16 @@
-from django.shortcuts import render
 from django.core.urlresolvers import reverse
-from models import Challenge, Person, Word, Jar, FacebookPerson
 from django.views.generic.detail import DetailView
-from django.contrib import auth
-from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from django.views.generic.edit import FormView, CreateView
+from django.views.generic.edit import CreateView
 
-import cgi
-import urllib
-
-from cursejar.settings import local
-import models
-
-
-
-
-# Create your views here.
+from models import Challenge, Person
 
 
 def index(request):
     return render_to_response("main/index.html",
                               RequestContext(request))
+
 
 class ChallengeView(DetailView):
     model = Challenge
