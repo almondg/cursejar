@@ -1,9 +1,10 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title></title>
-</head>
-<body>
+{% extends "main/base.html" %}
+{% block title %}
+    <title>{% if request.user.is_authenticated %}Logged In{% else %}Not Logged In{% endif %}</title>
+{% endblock %}
+{% block content_before %}
+
+<a href="/">Home</a>
 <table>
     <tr>
     <td><img src="{{ request.user.profile.profile_image_url }}"/></td>
@@ -44,5 +45,5 @@
 {% endfor %}
 </tbody>
 </table>
-</body>
-</html>
+
+{% endblock %}

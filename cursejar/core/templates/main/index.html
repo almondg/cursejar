@@ -20,7 +20,9 @@
            <li><a href="{% url 'challenge-details'  challenge.pk %}">{{ challenge.name }}</a></li>
         {% endfor %}
         </ul>
-        <a href="{% url 'create-a-challenge' %}">Create a new form</a>
+        <a href="{% url 'view-all-challenges' request.user.profile.pk %}">View All My Challenges</a>
+        |
+        <a href="{% url 'create-a-challenge' %}">Create a new Challenge</a>
     </div>
     {% endblock %}
 

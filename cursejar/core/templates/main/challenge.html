@@ -12,30 +12,38 @@
 <body>
 <table style="width:300px">
     <tbody>
-        <tr>
-            <td>Challenge Name</td>
-            <td>Start Date</td>
-            <td>End Date</td>
-            <td>Participants</td>
-            <td>Logger</td>
-        </tr>
-        <tr>
-            <td>{{ object.name }}</td>
-            <td>{{ object.start_date }}</td>
-            <td>{{ object.end_date }}</td>
-            <td>
-                <ul type="squre">
-                    {% for person in object.participant.all %}
-                    <li>{{ person }}</li>
-                    {% endfor %}
-                </ul>
-            </td>
-            <td><img src="{{ request.user.profile.profile_image_url }}"/></td>
-        </tr>
+    <tr>
+        <td>Challenge Name</td>
+        <td>Words</td>
+        <td>Start Date</td>
+        <td>End Date</td>
+        <td>Participants</td>
+        <td>Logger</td>
+    </tr>
+    <tr>
+        <td>{{ object.name }}</td>
+        <td>
+            <ul type="squre">
+                {% for w in challenge.word_set.all %}
+                <li>{{ w }}</li>
+                {% endfor %}
+            </ul>
+        </td>
+        <td>{{ object.start_date }}</td>
+        <td>{{ object.end_date }}</td>
+        <td>
+            <ul type="squre">
+                {% for person in object.participant.all %}
+                <li>{{ person }}</li>
+                {% endfor %}
+            </ul>
+        </td>
+        <td><img src="{{ request.user.profile.profile_image_url }}"/></td>
+    </tr>
     </tbody>
 </table>
 
- <a href="{% url 'view-all-challenges' challenge.pk %}">View All My Challenges</a>
+<a href="{% url 'view-all-challenges' request.user.profile.pk %}">View All My Challenges</a>
 
 </body>
 </html>
