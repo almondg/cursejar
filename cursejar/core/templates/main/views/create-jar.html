@@ -1,0 +1,108 @@
+<style>
+.auto-complete-field {
+	text-align: left;
+}
+
+.big-label {
+	color: #7B2D78;
+	font-weight: bold;
+	font-size: 1.2em;
+}
+
+.sub-label {
+	color: #4DC8F4;
+}
+
+.auto-complete-field {
+	margin: 40px auto;
+	width: 550px;
+}
+
+.auto-complete-input-field input {
+	background: #C6C5C5;
+	border: none;
+	width: 100%;
+	padding: 6px;
+}
+.auto-complete-input-field a {
+	display: block;
+	border: 2px solid #4DC8F4;
+	color: #4DC8F4;
+	padding: 4px;
+	text-align: center;
+}
+.auto-complete-input-field a:hover {
+	background: #4DC8F4;
+	color: white;
+	text-decoration: none;
+}
+.auto-complete-input-field .list-items-container {
+	position: absolute;
+	z-index: 100;
+}
+.auto-complete-input-field ul {
+	padding: 0px;
+	list-style: none;
+}
+.auto-complete-input-field .list-items li {
+	background: white;
+	cursor: pointer;
+	padding: 4px;
+}
+.auto-complete-input-field .list-items li.selected, .auto-complete-input-field .list-items li:hover {
+	background: #7B2D78;
+	color: white;
+}
+.auto-complete-input-field .selected-items li {
+	background: white;
+	cursor: pointer;
+	padding: 4px;
+	margin-top: 4px;
+	color: #4DC8F4;
+}
+
+.auto-complete-input-field .selected-items li i {
+	margin-top: 1px;
+}
+
+</style>
+<div class="section-title"><div>Create a New Word Jar</div></div>
+
+<div class="row auto-complete-field" style="margin-left: 30px;">
+	<div class="col-sm-4">
+		<div class="big-label">Invite Friends</div>
+		<div class="sub-label">Invite friends you wish to challenge</div>
+	</div>
+	<div class="col-sm-8">
+		<div class="auto-complete-input-field auto-complete-input-field-idiot" data-list="friends" data-selected-items-list="selectedFriends" data-ng-model="selectedFriends" data-placeholder="Friend's Name"></div>
+	</div>
+</div>
+
+<div class="row auto-complete-field" style="margin-left: 30px;">
+	<div class="col-sm-4">
+		<div class="big-label">Choose Words</div>
+		<div class="sub-label">Choose words you wish to forbid</div>
+	</div>
+	<div class="col-sm-8">
+		<div class="auto-complete-input-field" data-list="wordsList" data-selected-items-list="selectedWords" data-ng-model="selectedWords" data-placeholder=""></div>
+
+		<div class="auto-complete-input-field">
+			<div class="row">
+				<div class="col-sm-9"><input ng-model="inputWord" placeholder="Forbidden Word" ng-keydown="onKeydown($event)"></div>
+				<div class="col-sm-3"><a href="#" ng-click="$event.preventDefault(); onAddWord()">Add</a></div>
+			</div>
+			<div class="row">
+				<div class="col-sm-9 selected-items-container">
+					<ul class="selected-items">
+						<li ng-repeat="listItem in selectedWords" ng-click="onSelectedWordsListItemClick(listItem);">
+							<span>{{listItem}}</span>
+							<i class="pull-right glyphicon glyphicon-remove"></i>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<a class="btn-go" href="#" ng-click="onGo($event)"></a>

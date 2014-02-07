@@ -1,0 +1,338 @@
+/* Space out content a bit */
+body {
+  background: #E9E9E9;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  font-family: 'Noto Sans', sans-serif;
+}
+
+/* Everything but the jumbotron gets side spacing for mobile first views */
+.header,
+.marketing,
+.footer {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+/* Custom page header */
+.header {
+  border-bottom: 1px solid #e5e5e5;
+}
+/* Make the masthead heading the same height as the navigation */
+.header h3 {
+  margin-top: 0;
+  margin-bottom: 0;
+  line-height: 40px;
+  padding-bottom: 19px;
+}
+
+/* Custom page footer */
+.footer {
+  padding-top: 19px;
+  color: #777;
+  border-top: 1px solid #e5e5e5;
+}
+
+/* Customize container */
+@media (min-width: 768px) {
+  .container {
+    max-width: 730px;
+  }
+}
+.container-narrow > hr {
+  margin: 30px 0;
+}
+
+/* Main marketing message and sign up button */
+.jumbotron {
+  text-align: center;
+  border-bottom: 1px solid #e5e5e5;
+}
+.jumbotron .btn {
+  font-size: 21px;
+  padding: 14px 24px;
+}
+
+/* Supporting marketing content */
+.marketing {
+  margin: 40px 0;
+}
+.marketing p + h4 {
+  margin-top: 28px;
+}
+
+/* Responsive: Portrait tablets and up */
+@media screen and (min-width: 768px) {
+  /* Remove the padding we set earlier */
+  .header,
+  .marketing,
+  .footer {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  /* Space out the masthead */
+  .header {
+    margin-bottom: 30px;
+  }
+  /* Remove the bottom border on the jumbotron for visual effect */
+  .jumbotron {
+    border-bottom: 0;
+  }
+}
+
+.logo {
+  background: url(../images/biters_logo.png);
+  width: 168px;
+  height: 105px;
+  display: inline-block;
+  margin-top: 50px;
+}
+
+.slogan {
+  background: url(../images/biters_main_txt.png);
+  width: 463px;
+  height: 101px;
+  display: inline-block;
+  margin-top: 65px;
+  margin-left: 48px;
+}
+
+.banner {
+  background: url(../images/biters_big_bannar.png);
+  width: 339px;
+  height: 197px;
+  display: inline-block;
+  margin-top: 30px;
+}
+
+.container {
+  text-align: center;
+}
+
+.section-title {
+  background: url(../images/biters_blue_bannar.png);
+    width: 275px;
+    height: 54px;
+    display: inline-block;
+    margin-top: 50px;
+  }
+
+
+.purple-section-title {
+  background: url(../images/biters_purple_bannar.png);
+    width: 303px;
+    height: 59px;
+    display: inline-block;
+    margin-top: 50px;
+  }
+
+.section-title div, .purple-section-title div {
+  color: white;
+    font-weight: bold;
+    margin-top: 10px;
+    font-size: 1.1em;
+  }
+
+.btn-go {
+  background: url(../images/biters_go_btn.png);
+    display: inline-block;
+    width: 83px;
+    height: 81px;
+  }
+  .btn-go:hover {
+  background: url(../images/go_btn_press2.png);
+  }
+  .btn-go:active {
+  background: url(../images/go_btn_press1.png);
+  }
+
+.jar-itself {
+  background: url(../images/biters_jar.png);
+    width: 177px;
+    height: 257px;
+    color: #7B2D78;
+    font-size: 1.2em;
+  }
+  .completed-jar-container .jar-itself {
+  background: url(../images/jar_purple.png);
+  }
+
+.word-list {
+  padding-top: 70px;
+  }
+  .h-line {
+  background: url(../images/biters_line.png);
+    width: 115px;
+    height: 10px;
+    display: inline-block;
+  }
+
+.countdown {
+  font-size: 2em;
+    font-weight: bold;
+    margin-top: -5px;
+  }
+
+.friends-list {
+  list-style: none;
+    margin-top: 4px;
+    padding: 20px;
+  }
+
+.full-view .friends-list>li {
+  margin-bottom: 10px;
+  }
+
+.full-view .friends-list {
+  margin-left: 50px;
+    margin-right: -90px;
+    border-left: 3px solid #7B2D78;
+    padding-left: 50px;
+    margin-top: 0px;
+  }
+
+.full-view .friends-list .friend-info {
+  padding: 7px 4px;
+  }
+
+.friends-list .friend-info {
+  clear: left;
+    text-align: left;
+    background: white;
+    margin-bottom: 7px;
+    color: #4DC8F4;
+    padding: 4px;
+  }
+
+.friends-list .friend-info img {
+  width: 35px;
+    height: 35px;
+    float: left;
+    margin-right: 6px;
+  }
+
+.friends-list .friend-info .friends-list-item-name {
+  line-height: 35px;
+  }
+
+.friends-list .friend-info .friends-list-item-money {
+  float: right;
+    line-height: 31px;
+    padding: 0px 14px;
+    border: 2px solid;
+    box-sizing: border-box;
+  }
+
+.sub-banner {
+  background: url(../images/total_sum_banner.png);
+    width: 265px;
+    height: 55px;
+    margin-top: 20px;
+    margin-left: -45px;
+    color: white;
+  }
+
+.sub-banner div {
+  padding-top: 7px;
+    font-size: 1.2em;
+  }
+
+.friends-list-item-word-list {
+  text-align: left;
+  }
+
+.friends-list-item-word-list div {
+  margin-bottom: 4px;
+  }
+
+.friends-list-item-word-list span {
+  background: #4DC8F4;
+    color: white;
+    padding: 0px 6px;
+    display: inline-block;
+  }
+
+.menu-item {
+  position: absolute;
+    color: white;
+    background: url(../images/back_back_btn.png);
+    width: 199px;
+    height: 37px;
+    top: 70px;
+    left: 50%;
+  }
+  .menu-item a {
+  color: white;
+    text-decoration: none;
+    margin-top: 8px;
+    display: inline-block;
+    font-size: 1.1em;
+  }
+  .menu-item.next {
+  background: url(../images/next_back_btn.png);
+  }
+
+  .completed-jar-container .winner {
+    position: absolute;
+    background: url(../images/the_winner_white.png);
+    width: 95px;
+    margin-top: -221px;
+    height: 95px;
+    margin-left: -30px;
+  }
+
+
+  .jar-container.completed-jar-container {
+    width: 180px;
+    margin-left: 260px;
+  }
+  .completed-jar-container .winner {
+    position: absolute;
+    background: url(../images/the_winner_white.png);
+    width: 95px;
+    margin-top: -221px;
+    height: 95px;
+    margin-left: -30px;
+  }
+  .completed-jar-container:hover .winner {
+    background: url(../images/the_winner_blue.png);
+  }
+
+  .completed-jar-container:active .winner {
+    margin-top: -219px;
+  }
+
+  .completed-jar-container .winner div {
+    font-size: 0.7em;
+    font-weight: bold;
+    margin-top: 46px;
+    padding: 0px 10px;
+  }
+
+  .jar-container {
+    cursor: pointer;
+    margin-top: 70px;
+    float: left; 
+    width: 490px; 
+    margin-left: 60px;
+  }
+
+  .jar-container:first-child {
+    margin-left: 0px;
+  }
+
+  .big-section-header {
+    margin: 40px 0px;
+    background: url(../images/finished_line.png);
+    width: 485px;
+    height: 36px;
+    display: inline-block;
+  }
+
+  .big-section-header div {
+    color: white;
+    font-weight: bold;
+    font-size: 1.2em;
+    margin-top: 7px;
+    margin-left: -4px;
+  }
