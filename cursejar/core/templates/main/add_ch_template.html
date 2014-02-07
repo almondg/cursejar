@@ -1,54 +1,99 @@
 {% extends "main/base.html" %}
 {% block title %}
-    <title>{% if request.user.is_authenticated %}Logged In{% else %}Not Logged In{% endif %}</title>
+<title>{% if request.user.is_authenticated %}Logged In{% else %}Not Logged In{% endif %}</title>
 {% endblock %}
 {% block content_before %}
 
 
 <script src="/core/static/scripts/vendor/underscore.js" ></script>
 <script src="/core/static/scripts/vendor/jquery-2.0.3.js" ></script>
-
-<script>
-  $('.add-book').click(function(ev){
-    ev.preventDefault();
-    var count = $('.books').children().length;
-    var tmplMarkup = $('#book-template').html();
-    var compiledTmpl = _.template(tmplMarkup, { id : count });
-    $('div.books').append(compiledTmpl);
-    // update form count
-    $('#id_books-TOTAL_FORMS').attr('value', count+1);
-  });
+<script type='text/javascript'>
+    function addFields(){
+        // Number of inputs to create
+        var number = document.getElementById("member").value;
+        // Container <div> where dynamic content will be placed
+        var container = document.getElementById("container");
+        // Clear previous contents of the container
+        while (container.hasChildNodes()) {
+            container.removeChild(container.lastChild);
+        }
+        for (i=0;i<number;i++){
+            // Append a node with a random text
+            container.appendChild(document.createTextNode("Member " + (i+1)));
+            // Create an <input> element, set its type and name attributes
+            var input = document.createElement("input");
+            input.type = "text";
+            input.name = "member" + i;
+            container.appendChild(input);
+            // Append a line break
+            container.appendChild(document.createElement("br"));
+        }
+    }
 </script>
 
-<h1>Add an Author and Books</h1>
+
+<script>
+    $(function(){
+        $(".member").keyup(function (e) {
+            if (e.which == 13) {
+                var container = document.getElementById("container");
+                // Clear previous contents of the container
+                while (container.hasChildNodes()) {
+                    container.removeChild(container.lastChild);
+                }
+
+                var label = document.createElement("label");
+                var text = "My Teat";
+                label.appendChild(text);
+                container.appendChild(label);
+            }
+        });
+
+    });
+    $('.add-book').click(function(ev){
+        ev.preventDefault();
+        var count = $('.books').children().length;
+        var tmplMarkup = $('#book-template').html();
+        var compiledTmpl = _.template(tmplMarkup, { id : count });
+        $('div.books').append(compiledTmpl);
+        // update form count
+        $('#id_books-TOTAL_FORMS').attr('value', count+1);
+    });
+</script>
+
+<h1>Add an Author and Bookssssss</h1>
 
 <form class="form-horizontal form-inline" method="post">
-  {% csrf_token %}
-  <legend>Author Details</legend>
-  {{ form }}
-  {{ formset.management_form }}
-  <legend>Books</legend>
-  <div class="books">
-    {% for book_form in formset %}
-      <div id="book-{{ forloop.counter0 }}">
-        {{ book_form }}
-      </div>
-    {% endfor %}
-  </div>
-  <div class="form-actions">
-     <a href="#" class="btn btn-info add-book">Add Book</a>
-     <button class="btn btn-info add-book">Add Book</button>
-     <button type="submit" class="btn btn-primary">Create Event</button>
-   </div>
- </form>
+    {% csrf_token %}
+    <legend>Author Details</legend>
+    {{ form }}
+    {{ formset.management_form }}
+    <legend>Books</legend>
+    <div class="books">
+        {% for book_form in formset %}
+        <div id="book-{{ forloop.counter0 }}">
+            {{ book_form }}
+        </div>
+        {% endfor %}
+    </div>
+    <div class="form-actions">
+        <a href="#" class="btn btn-info add-book" on>Add Book</a>
+        <button class="btn btn-info add-book">Add Book</button>
+        <button type="submit" class="btn btn-primary">Create Event</button>
+    </div>
+</form>
+
+<input type="text" id="member" name="member" value="">Number of members: (max. 10)<br />
+<a href="#" id="filldetails" onclick="addFields()">Fill Details</a>
+<div id="container"/>
 
 <script type="text/html" id="book-template">
-  <div id="book-<%= id %>">
-    <label for="id_books-<%= id %>-title">Book Title:</label>
-    <input id="id_books-<%= id %>-title" type="text" name="books-<%= id %>-title" maxlength="100">
-    <input type="hidden" name="books-<%= id %>-author" id="id_books-<%= id %>-author">
-    <input type="hidden" name="books-<%= id %>-id" id="id_books-<%= id %>-id">
-  </div>
+    <div id="book-<%= id %>">
+        <label for="id_books-<%= id %>-title">Book Title:</label>
+        <input id="id_books-<%= id %>-title" type="text" name="books-<%= id %>-title" maxlength="100">
+        <input type="hidden" name="books-<%= id %>-author" id="id_books-<%= id %>-author">
+        <input type="hidden" name="books-<%= id %>-id" id="id_books-<%= id %>-id">
+    </div>
 </script>
 
 {% endblock %}

@@ -16,7 +16,6 @@ DEFAULT_FINE_FOR_WORD = 1
 
 class Person(models.Model):
     name = models.CharField(max_length=128)
-    facebook_profile = models.ForeignKey('UserProfile', null=True)
 
     def __unicode__(self):
         return unicode(self.name)
@@ -66,8 +65,10 @@ class Word(models.Model):
 
 
 class UserProfile(models.Model):
+    id = models.AutoField(primary_key=True, db_column='ID')
     user = models.OneToOneField(User, related_name='profile')
     about_me = models.TextField(null=True, blank=True)
+    person = models.ForeignKey('Person', null=True)
 
     def __unicode__(self):
         return "{}'s profile".format(self.user.username)
@@ -102,10 +103,3 @@ class UserProfile(models.Model):
 
 User.profile = property(lambda u: UserProfile.objects.get_or_create(user=u)[0])
 
-
-class Author(models.Model):
-    name = models.CharField(max_length=100)
-
-class Book(models.Model):
-    author = models.ForeignKey(Author)
-    title = models.CharField(max_length=100)

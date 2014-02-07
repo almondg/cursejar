@@ -4,9 +4,9 @@ from django.views.generic.detail import DetailView
 from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
 from django.views.generic.edit import CreateView
-from core.forms import ChallengeForm, ChallengeFormSet, BookFormSet, AuthorForm
+from core.forms import ChallengeForm, ChallengeFormSet
 
-from models import Challenge, Person, Author, Book
+from models import Challenge, Person
 
 
 def index(request):
@@ -30,7 +30,7 @@ class AllChallenges(DetailView):
 
 
 class AddChallengeView(CreateView):
-    template_name = 'main/add_challenge.html'
+    template_name = 'main/challenge_form.html'
     form_class = ChallengeForm
 
     def get_context_data(self, **kwargs):
@@ -65,26 +65,3 @@ class CreateChallenge(CreateView):
         result = reverse(viewname='challenge-details', current_app='core', kwargs={'pk': self.object.pk})
         return result
 
-
-class AddAuthorView(CreateView):
-    template_name = 'main/add_ch_template.html'
-    form_class = AuthorForm
-
-    def get_context_data(self, **kwargs):
-        context = super(AddAuthorView, self).get_context_data(**kwargs)
-        if self.request.POST:
-            context['formset'] = BookFormSet(self.request.POST)
-        else:
-            context['formset'] = BookFormSet()
-        return context
-
-    def form_valid(self, form):
-        context = self.get_context_data()
-        formset = context['formset']
-        if formset.is_valid():
-            self.object = form.save()
-            formset.instance = self.object
-            formset.save()
-            return redirect(self.object.get_absolute_url())  # assuming your model has ``get_absolute_url`` defined.
-        else:
-            return self.render_to_response(self.get_context_data(form=form))

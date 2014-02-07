@@ -1,7 +1,6 @@
 from allauth import models
 from django.shortcuts import render
 from djangotoolbox.fields import ListField
-from core.models import Author, Book
 
 __author__ = 'shaked'
 
@@ -61,14 +60,3 @@ class MyForm(forms.Form):
                 form = MyForm()
         return render(request, "template", { 'form': form })
 
-
-class AuthorForm(forms.ModelForm):
-    class Meta:
-        model = Author
-
-
-class BookForm(forms.ModelForm):
-    class Meta:
-        model = Book
-
-BookFormSet = inlineformset_factory(Author, Book)
