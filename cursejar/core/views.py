@@ -1,10 +1,13 @@
-
+import time, datetime
+import requests
 from django.core.urlresolvers import reverse
-import datetime
+from django.utils import timezone
+
 from django.views.generic.detail import DetailView
 from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
 from django.views.generic.edit import CreateView
+
 import facebook
 from django.conf import settings
 
@@ -12,6 +15,12 @@ from core.forms import ChallengeForm, ChallengeFormSet
 from cursejar import settings
 from cursejar.settings import local
 from models import Challenge, Person, ChargeEvent
+
+from core.forms import ChallengeForm, ChallengeFormSet
+from django.http import HttpResponseRedirect
+from  django.conf import settings
+from models import Challenge, Person, PayPalUser, Jar
+
 
 
 def index(request):
@@ -43,6 +52,13 @@ class ChallengeView(DetailView):
                         charge_event.date_of_felony = datetime.datetime.now()
                         charge_event.save()
                         print 'saved'
+
+        object = context['object']
+
+        context['is_time_up'] = datetime.datetime.now() > object.end_date
+        context['sum_of_debt'] = Jar.objects.get(challenge=object).current_sum
+        context['winner_user'] = Person.objects.get(name='yotam')
+
         return context
 
 class PersonView(DetailView):
@@ -93,14 +109,130 @@ class CreateChallenge(CreateView):
         return result
 
 
-class FacebookView(DetailView):
+# class FacebookView(DetailView):
+#
+#     def get_posts_from_facebook(pk):
+#         related_challenge = Challenge.objects.get(pk=pk)
+#         list_of_participants = related_challenge.get('participant')
+#         word1 = related_challenge.get('word1')
+#         graph = facebook().GraphAPI()
+#         graph.access_token = facebook.get_app_access_token(settings.FACEBOOK_APP_ID, settings.FACEBOOK_SECRET_KEY)
+#         posts = graph.get_connections(id, 'posts')
 
-    def get_posts_from_facebook(pk):
-        related_challenge = Challenge.objects.get(pk=pk)
-        list_of_participants = related_challenge.get('participant')
-        word1 = related_challenge.get('word1')
-        graph = facebook().GraphAPI()
-        graph.access_token = facebook.get_app_access_token(settings.FACEBOOK_APP_ID, settings.FACEBOOK_SECRET_KEY)
-        posts = graph.get_connections(id, 'posts')
+def paypal_agreement(request):
+    if request.user.is_authenticated():
+        url = "https://svcs.sandbox.paypal.com/AdaptivePayments/Preapproval"
+        cancel_absolute_uri = request.build_absolute_uri(reverse('index'))
+        return_absolute_uri = request.build_absolute_uri(reverse('index'))
+        headers = {
+            "X-PAYPAL-SECURITY-USERID": "orkun.saitoglu_api1.paypal.com",
+            "X-PAYPAL-SECURITY-PASSWORD": "BRCQECZAWSHZGCRM",
+            "X-PAYPAL-SECURITY-SIGNATURE": "AiH2hRv9R8oBsbyGKEgJr0XuNWxrAH353ZcFTx91-TwvlBXvpQLns38A",
+            "X-PAYPAL-REQUEST-DATA-FORMAT": "NV",
+            "X-PAYPAL-RESPONSE-DATA-FORMAT": "NV",
+            "X-PAYPAL-APPLICATION-ID": "APP-80W284485P519543T"
+        }
+
+        payload = {
+            "cancelUrl": cancel_absolute_uri,
+            "currencyCode": 'USD',
+            "maxAmountPerPayment": '10.00',
+            "maxNumberOfPayments": '2000',
+            "maxTotalAmountOfAllPayments": '2000.00',
+            "pinType": 'NOT_REQUIRED',
+            "requestEnvelope": 'errorLanguage=en_US',
+            "returnUrl": return_absolute_uri,
+            "startingDate": time.strftime("20%y-%m-%dT00:00:00.000Z")
+        }
+
+        r = requests.post(url, data=payload, headers=headers)
+        print r.text
+        respDict = dict()
+        for pair in r.text.split('&'):
+            pairArr = pair.split('=')
+            respDict[pairArr[0]] = pairArr[1]
+
+        retUrl = "NO URL"
+
+        if respDict['responseEnvelope.ack'] == "Success":
+            retUrl = 'https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_ap-preapproval&preapprovalkey=' + respDict[
+                'preapprovalKey']
+            related_user = Person.objects.get(pk=request.user.profile.pk)
+            paypal_user, created = PayPalUser.objects.get_or_create(person=related_user)
+            paypal_user.pre_approval_key = respDict['preapprovalKey']
+            paypal_user.save()
+
+        else:
+            retUrl = cancel_absolute_uri
+        print retUrl
+
+        # response = HttpResponse()
+
+        return HttpResponseRedirect(retUrl)
+    else:
+        return HttpResponseRedirect(reverse('index'))
 
 
+def paypal_charge_user(request):
+    if request.user.is_authenticated():
+        challenge_pk = request.POST['challenge']
+        winner_pk = request.POST['winner-user']
+        related_challenge = Challenge.objects.get(pk=challenge_pk)
+        winner_user = Person.objects.get(pk=winner_pk)
+        paying_user = Person.objects.get(pk=request.user.profile.pk)
+        paying_paypal_user = PayPalUser.objects.get(person=paying_user)
+        paid_amount_total = Jar.objects.get(challenge=related_challenge).current_sum
+
+        number_of_paying_participants = related_challenge.participant.count()
+        if number_of_paying_participants > 0:
+            paid_amount_per_user = paid_amount_total/number_of_paying_participants
+        else:
+            paid_amount_per_user = paid_amount_total
+        return_absolute_uri = request.build_absolute_uri(reverse('index'))
+        cancel_absolute_uri = request.build_absolute_uri(reverse('challenge-details', kwargs={'pk': challenge_pk}))
+
+
+        url3 = "https://svcs.sandbox.paypal.com/AdaptivePayments/PreapprovalDetails"
+
+        headers3 = {
+            "X-PAYPAL-SECURITY-USERID": "orkun.saitoglu_api1.paypal.com",
+            "X-PAYPAL-SECURITY-PASSWORD": "BRCQECZAWSHZGCRM",
+            "X-PAYPAL-SECURITY-SIGNATURE": "AiH2hRv9R8oBsbyGKEgJr0XuNWxrAH353ZcFTx91-TwvlBXvpQLns38A",
+            "X-PAYPAL-REQUEST-DATA-FORMAT": "NV",
+            "X-PAYPAL-RESPONSE-DATA-FORMAT": "NV",
+            "X-PAYPAL-APPLICATION-ID": "APP-80W284485P519543T"
+        }
+
+
+        payload3 = {
+            'actionType': 'PAY', #The action taken in the Pay request (that is, the PAY action)
+            'currencyCode': 'USD', #The currency, e.g. US dollars
+            'feesPayer': 'EACHRECEIVER',
+            'memo': 'Example',
+            'preapprovalKey': paying_paypal_user.pre_approval_key, #The preapproval key received in a Preapproval API response
+            'receiverList.receiver(0).amount': paid_amount_per_user, #The payment amount
+            'receiverList.receiver(0).email': winner_user.email,
+            'senderEmail': paying_user.email,
+            'returnUrl': return_absolute_uri, #For use if the customer proceeds with payment
+            'cancelUrl': cancel_absolute_uri, #For use if the customer decides not to proceed with payment
+            'requestEnvelope.errorLanguage': 'en_US'
+        }
+
+        if paid_amount_per_user > 0:
+            r3 = requests.post(url3, data=payload3, headers=headers3)
+
+            respDict3 = dict()
+
+            for pair in r3.text.split('&'):
+                pairArr = pair.split('=')
+                respDict3[pairArr[0].upper()] = pairArr[1]
+
+            if respDict3['RESPONSEENVELOPE.ACK'] == 'Success':
+                print 'success!'
+            else:
+                print 'fail.. :('
+
+            return HttpResponseRedirect(reverse('index'))
+        else:
+            print 'Nothing to pay on.'
+            return HttpResponseRedirect(reverse('challenge-details', kwargs={'pk': challenge_pk}))

@@ -1,0 +1,56 @@
+<style>
+.container {
+	max-width: 1100px;
+}
+
+</style>
+
+<div>
+	<div ng-repeat="jar in jars" class="jar-container" ng-click="onJarClick(jar)">
+		<div class="row">
+			<div class="col-sm-4">
+				<div class="jar-itself">
+					<div class="word-list">
+						<div ng-repeat="word in jar.words">'{{word}}'</div>
+					</div>
+					<div class="h-line"></div>
+					<div>Time Left</div>
+					<div class="countdown">{{jar.countdownTimerHour}}:{{jar.countdownTimerMin}}:{{jar.countdownTimerSec}}</div>
+				</div>
+			</div>
+			<div class="col-sm-8">
+				<ul class="friends-list">
+					<li ng-repeat="friend in jar.friends">
+						<div class="friend-info">
+							<div class="friends-list-item-money">${{friend.money}}</div>
+							<img src="{{friend.avatarURL}}"/>
+							<div class="friends-list-item-name">{{friend.name}}</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="clearfix"></div>
+</div>
+
+<div class="big-section-header">
+	<div>FINISHED</div>
+</div>
+
+<div>
+	<div ng-repeat="jar in completedJars" class="completed-jar-container jar-container" ng-click="onJarClick(jar)">
+		<div class="jar-itself">
+			<div class="word-list">
+				<div ng-repeat="word in jar.words">'{{word}}'</div>
+			</div>
+			<div class="h-line"></div>
+			<div>Time Left</div>
+			<div class="countdown">00:00:00</div>
+			<div class="winner">
+				<div>{{jar.winner}}</div>
+			</div>
+		</div>
+	</div>
+	<div class="clearfix"></div>
+</div>

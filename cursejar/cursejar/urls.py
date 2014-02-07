@@ -1,8 +1,8 @@
 from django.conf.urls import patterns, url, include
 from django.contrib import admin
 from core import views
-admin.autodiscover()
 
+admin.autodiscover()
 
 urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
@@ -22,5 +22,4 @@ urlpatterns = patterns('',
     url(r'^accounts/', include('allauth.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', views.index, name='index'),
-
 )
